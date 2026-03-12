@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from auth import require_auth
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -9,6 +12,9 @@ st.set_page_config(
     page_icon="🚚",
     layout="wide",
 )
+
+# ── Authentication gate ───────────────────────────────────────────────────────
+authenticator, username = require_auth()
 
 # ── Design tokens ─────────────────────────────────────────────────────────────
 BG         = "#f4f6f9"
@@ -285,6 +291,8 @@ with st.sidebar:
     for mode, days in SLA.items():
         st.caption(f"{mode}: ≤ {days}d")
     st.markdown("---")
+    st.caption(f"Logged in as: {username}")
+    authenticator.logout("Log out", location="sidebar")
     st.caption("Superstore · Shipping · 2026")
 
 # ── Sidebar filter application ────────────────────────────────────────────────

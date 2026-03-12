@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from auth import require_auth
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -9,6 +10,9 @@ st.set_page_config(
     page_icon="📊",
     layout="wide",
 )
+
+# ── Authentication gate ───────────────────────────────────────────────────────
+authenticator, username = require_auth()
 
 # ── ART+DATA Design Tokens — Light Edition ────────────────────────────────────
 BG          = "#f4f6f9"      # Light gray canvas
@@ -285,6 +289,8 @@ with st.sidebar:
         )
 
     st.markdown("---")
+    st.caption(f"Logged in as: {username}")
+    authenticator.logout("Log out", location="sidebar")
     st.caption("Superstore · 2026")
 
 # ── Filter ────────────────────────────────────────────────────────────────────
